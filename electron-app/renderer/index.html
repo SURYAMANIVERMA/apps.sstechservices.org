@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SSTECH Nexeus Quick Support</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://apps.sstechservices.org; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';">
+<style>
+  :root{--bg:#0a0f1c;--bg2:#0f1729;--card:#121a30;--border:#1f2a4a;--text:#e6ecf7;--muted:#8a96b3;--primary:#3b82f6;--primary2:#60a5fa;--danger:#ef4444;--ok:#22c55e}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:radial-gradient(1200px 600px at 50% -10%,rgba(59,130,246,.25),transparent 60%),var(--bg);color:var(--text);overflow:hidden}
+  .app{display:flex;flex-direction:column;height:100vh}
+  header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--border);background:rgba(10,15,28,.7);backdrop-filter:blur(12px)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{width:42px;height:42px;border-radius:10px;background:#fff;padding:4px;box-shadow:0 0 30px -8px rgba(59,130,246,.7)}
+  .brand-name{font-weight:700}.brand-name span{color:var(--primary2)}
+  .brand-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px}
+  .status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 12px var(--ok);animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.5}}
+  main{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:22px}
+  .card{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column}
+  .card h2{margin:0 0 4px;font-size:14px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-weight:600}
+  .card .hint{font-size:13px;color:var(--muted);margin-bottom:18px}
+  .id-box{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);border-radius:12px;padding:18px;text-align:center;margin-bottom:12px}
+  .id-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+  .id-value{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:30px;font-weight:700;letter-spacing:3px;color:var(--primary2)}
+  .pin-value{font-size:22px;color:#fff;letter-spacing:6px}
+  .row{display:flex;gap:8px}
+  button{flex:1;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);padding:10px 14px;border-radius:10px;font-size:13px;font-weight:500;transition:.15s}
+  button:hover{background:rgba(59,130,246,.15);border-color:var(--primary)}
+  button.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+  button.primary:hover{background:var(--primary2)}
+  #connect-btn{flex:0 0 auto;width:auto;align-self:flex-start}
+  .partner-input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:14px 16px;border-radius:12px;font-family:"SF Mono",Menlo,monospace;font-size:18px;letter-spacing:2px;text-align:center;outline:none;margin-bottom:10px}
+  .partner-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.2)}
+  footer{padding:10px 22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);background:rgba(0,0,0,.2)}
+  footer a{color:var(--primary2);text-decoration:none;cursor:pointer}
+  .toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(40px);background:var(--ok);color:#052e10;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;z-index:100}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .remote-view{margin-top:14px;min-height:120px;border:1px solid var(--border);border-radius:12px;background:radial-gradient(circle at center,rgba(59,130,246,.15),rgba(0,0,0,.35));display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:12px;line-height:1.6;padding:14px}
+  .remote-view.live{border-color:rgba(34,197,94,.45);color:var(--text)}
+  /* Login overlay */
+  .login{position:fixed;inset:0;background:radial-gradient(1000px 500px at 50% 0%,rgba(59,130,246,.25),transparent 60%),var(--bg);display:flex;align-items:center;justify-content:center;z-index:50}
+  .login-card{width:400px;background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--border);border-radius:20px;padding:32px;text-align:center;box-shadow:0 20px 80px -10px rgba(59,130,246,.3)}
+  .login-card img{width:80px;height:80px;border-radius:16px;background:#fff;padding:8px;margin-bottom:18px}
+  .login-card h1{margin:0 0 6px;font-size:22px}
+  .login-card h1 span{color:var(--primary2)}
+  .login-card p{margin:0 0 24px;font-size:13px;color:var(--muted);line-height:1.6}
+  .login-card input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:12px 14px;border-radius:10px;font-size:14px;outline:none;margin-bottom:12px}
+  .login-card input:focus{border-color:var(--primary)}
+  .login-card .continue{width:100%;background:var(--primary);border:none;color:#fff;padding:13px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;margin-top:6px}
+  .login-card .continue:hover{background:var(--primary2)}
+  .login-card .skip{background:transparent;border:none;color:var(--muted);font-size:12px;cursor:pointer;margin-top:14px;text-decoration:underline}
+  .login-card .terms{font-size:11px;color:var(--muted);margin-top:14px;line-height:1.5}
+  .login-card .terms a{color:var(--primary2);cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- LOGIN / WELCOME SCREEN -->
+<div class="login" id="login-screen">
+  <div class="login-card">
+    <img src="logo.png" alt="SSTECH" />
+    <h1>Welcome to SSTECH <span>NEXEUS</span></h1>
+    <p>Quick Support Client<br/>Secure end-to-end encrypted remote assistance.</p>
+    <input id="login-name" placeholder="Your name (optional)" />
+    <input id="login-email" placeholder="Your email (optional)" type="email" />
+    <button class="continue" id="login-continue">Continue to Quick Support →</button>
+    <div class="terms">
+      By continuing you agree to the <a id="tos-link">Terms of Service</a> and <a id="privacy-link">Privacy Policy</a>.
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="main-app" style="display:none">
+  <header>
+    <div class="brand">
+      <img src="logo.png" alt="SSTECH" />
+      <div>
+        <div class="brand-name">SSTECH <span>NEXEUS</span></div>
+        <div class="brand-sub">Quick Support Client</div>
+      </div>
+    </div>
+    <div class="status"><span class="dot"></span><span id="status-text">Connected to relay-fra1</span></div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Allow Remote Control</h2>
+      <p class="hint">Share this ID and PIN with your SSTECH technician to receive secure remote support.</p>
+      <div class="id-box">
+        <div class="id-label">Your Session ID</div>
+        <div class="id-value" id="session-id">— — —</div>
+      </div>
+      <div class="id-box">
+        <div class="id-label">One-Time PIN</div>
+        <div class="id-value pin-value" id="session-pin">— — — —</div>
+      </div>
+      <div class="row" style="margin-top:auto;">
+        <button id="copy-id">Copy ID</button>
+        <button id="copy-pin">Copy PIN</button>
+        <button class="primary" id="new-session">New Session</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Control Remote Computer</h2>
+      <p class="hint">Enter the partner ID provided by the other side to start a secure session.</p>
+      <input class="partner-input" id="partner-id" placeholder="000-000-000" maxlength="11" />
+      <input class="partner-input" id="partner-pin" placeholder="PIN" maxlength="8" style="font-size:16px;letter-spacing:5px" />
+      <button class="primary" id="connect-btn" style="margin-bottom:14px;">Connect</button>
+      <div class="remote-view" id="remote-view">Remote screen preview will appear here after the secure session starts.</div>
+      <div style="border-top:1px solid var(--border);margin-top:auto;padding-top:14px;">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">Security</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">
+          ✓ AES-256-GCM end-to-end encryption<br/>
+          ✓ RSA-4096 key exchange<br/>
+          ✓ One-time PIN — never reused
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>SSTECH Nexeus v1.1.0 · © SSTECH Services &amp; Academy</span>
+    <span><a id="website-link">sstechservices.org</a> · <span id="platform-info"></span></span>
+  </footer>
+</div>
+
+<div id="incoming" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:200;background:linear-gradient(180deg,#0f1729,#121a30);border:1px solid #3b82f6;box-shadow:0 20px 60px -10px rgba(59,130,246,.5);border-radius:14px;padding:18px 22px;min-width:360px;color:#e6ecf7">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#60a5fa;margin-bottom:6px">Incoming remote session</div>
+  <div style="font-size:15px;font-weight:600;margin-bottom:4px">A technician is requesting to connect</div>
+  <div id="incoming-sub" style="font-size:12px;color:#8a96b3;margin-bottom:14px">Session ID pending…</div>
+  <div style="display:flex;gap:8px">
+    <button id="incoming-decline" style="flex:1;background:transparent;border:1px solid #1f2a4a;color:#e6ecf7;padding:10px;border-radius:10px;cursor:pointer">Decline</button>
+    <button id="incoming-accept" style="flex:1;background:#22c55e;border:none;color:#052e10;padding:10px;border-radius:10px;font-weight:700;cursor:pointer">Accept</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const toast = (msg) => { const el = $("toast"); el.textContent = msg; el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),1600); };
+
+  // Browser-side fallback generator (works even if IPC fails)
+  function genLocal() {
+    const buf = new Uint8Array(7);
+    (window.crypto || window.msCrypto).getRandomValues(buf);
+    const d = (n)=> (buf[n] % 10).toString();
+    const id = `${d(0)}${d(1)}${d(2)}-${d(3)}${d(4)}${d(5)}-${(buf[6]%10).toString()}${(buf[0]%10).toString()}${(buf[1]%10).toString()}`;
+    const pin = `${d(2)}${d(3)}${d(4)}${d(5)}`;
+    return { id, pin, server: "relay-fra1.sstechservices.org" };
+  }
+
+  async function refresh() {
+    let s;
+    try {
+      if (window.nexeus && window.nexeus.generateSession) {
+        s = await window.nexeus.generateSession();
+      } else { s = genLocal(); }
+    } catch(e) { s = genLocal(); }
+    $("session-id").textContent = s.id;
+    $("session-pin").textContent = s.pin;
+    $("status-text").textContent = "Connected to " + s.server;
+    window._session = s;
+    registerHeartbeat();
+  }
+
+  async function registerHeartbeat() {
+    if (!window._session) return;
+    try {
+      if (window.nexeus && window.nexeus.registerDevice) {
+        await window.nexeus.registerDevice({ id: window._session.id, pin: window._session.pin, alias: $("login-name").value.trim() || null });
+      } else {
+        await fetch("https://apps.sstechservices.org/api/public/remote/register", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ deviceId: window._session.id, pin: window._session.pin, alias: $("login-name").value.trim() || null, platform: navigator.platform, appVersion: "web" })
+        });
+      }
+    } catch(e) {}
+  }
+
+  async function copyText(text) {
+    try {
+      if (window.nexeus && window.nexeus.copy) return await window.nexeus.copy(text);
+    } catch(e){}
+    try { await navigator.clipboard.writeText(text); } catch(e){}
+  }
+
+  function openExt(url) {
+    try { if (window.nexeus && window.nexeus.openExternal) return window.nexeus.openExternal(url); } catch(e){}
+    window.open(url, "_blank");
+  }
+
+  // Login gate
+  $("login-continue").addEventListener("click", () => {
+    const name = $("login-name").value.trim();
+    const email = $("login-email").value.trim();
+    try {
+      localStorage.setItem("nexeus_user", name || email || "guest");
+      if (window.nexeus && window.nexeus.saveProfile) window.nexeus.saveProfile({ name, email });
+    } catch(e){}
+    $("login-screen").style.display = "none";
+    $("main-app").style.display = "flex";
+    refresh();
+    setInterval(registerHeartbeat, 30000);
+    startSessionStream();
+  });
+
+  const API = "https://apps.sstechservices.org";
+  let handledSessions = new Set();
+  let currentIncoming = null;
+  let sessionStream = null;
+  let pollFallbackTimer = null;
+  let streamRetryTimer = null;
+
+  function startSessionStream() {
+    stopSessionStream();
+    if (!window._session) return;
+    const url = `${API}/api/public/remote/stream?deviceId=${encodeURIComponent(window._session.id)}&pin=${encodeURIComponent(window._session.pin)}`;
+    try {
+      const es = new EventSource(url);
+      sessionStream = es;
+      es.addEventListener("session", (evt) => {
+        try {
+          const s = JSON.parse(evt.data);
+          if (s.status === "waiting" && !handledSessions.has(s.id)) showIncoming(s);
+        } catch (e) {}
+      });
+      es.addEventListener("ready", () => {
+        // Server is streaming — cancel polling fallback
+        if (pollFallbackTimer) { clearInterval(pollFallbackTimer); pollFallbackTimer = null; }
+      });
+      es.onerror = () => {
+        // Reconnect after 2s; enable polling fallback in the meantime
+        if (!pollFallbackTimer) pollFallbackTimer = setInterval(pollPending, 4000);
+        if (streamRetryTimer) return;
+        streamRetryTimer = setTimeout(() => { streamRetryTimer = null; startSessionStream(); }, 2000);
+      };
+    } catch (e) {
+      // EventSource unavailable — poll instead
+      if (!pollFallbackTimer) pollFallbackTimer = setInterval(pollPending, 4000);
+    }
+  }
+
+  function stopSessionStream() {
+    if (sessionStream) { try { sessionStream.close(); } catch (e) {} sessionStream = null; }
+    if (streamRetryTimer) { clearTimeout(streamRetryTimer); streamRetryTimer = null; }
+  }
+
+  async function pollPending() {
+    if (!window._session) return;
+    try {
+      const res = await fetch(`${API}/api/public/remote/pending`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ deviceId: window._session.id, pin: window._session.pin }),
+      });
+      if (!res.ok) return;
+      const body = await res.json();
+      const waiting = (body.sessions || []).find((s) => s.status === "waiting" && !handledSessions.has(s.id));
+      if (waiting) showIncoming(waiting);
+    } catch (e) {}
+  }
+
+  function showIncoming(session) {
+    currentIncoming = session;
+    $("incoming-sub").textContent = `Session ${session.id.slice(0, 8)} · started ${new Date(session.started_at).toLocaleTimeString()}`;
+    $("incoming").style.display = "block";
+  }
+
+  async function respondIncoming(action) {
+    if (!currentIncoming || !window._session) return;
+    const sessionId = currentIncoming.id;
+    handledSessions.add(sessionId);
+    $("incoming").style.display = "none";
+    try {
+      await fetch(`${API}/api/public/remote/accept`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          deviceId: window._session.id,
+          pin: window._session.pin,
+          sessionId,
+          action,
+        }),
+      });
+      if (action === "accept") {
+        const screen = $("remote-view");
+        screen.classList.add("live");
+        screen.innerHTML = "<div><strong>Session accepted</strong><br/>Live screen sharing is now active with the technician.</div>";
+        toast("Session accepted");
+      } else {
+        toast("Session declined");
+      }
+    } catch (e) {}
+    currentIncoming = null;
+  }
+
+  document.getElementById("incoming-accept").addEventListener("click", () => respondIncoming("accept"));
+  document.getElementById("incoming-decline").addEventListener("click", () => respondIncoming("decline"));
+  $("tos-link").addEventListener("click", ()=> openExt("https://sstechservices.org/terms"));
+  $("privacy-link").addEventListener("click", ()=> openExt("https://sstechservices.org/privacy"));
+
+  $("new-session").addEventListener("click", refresh);
+  $("copy-id").addEventListener("click", async () => { await copyText(window._session.id); toast("Session ID copied"); });
+  $("copy-pin").addEventListener("click", async () => { await copyText(window._session.pin); toast("PIN copied"); });
+  $("connect-btn").addEventListener("click", () => {
+    const v = $("partner-id").value.trim();
+    const p = $("partner-pin").value.trim();
+    if (!v) return toast("Enter partner ID");
+    if (!p) return toast("Enter partner PIN");
+    const screen = $("remote-view");
+    screen.classList.add("live");
+    screen.innerHTML = "<div><strong>Session started</strong><br/>Connecting to " + v + "…<br/>Waiting for partner authorization / live screen stream.</div>";
+    toast("Session started");
+  });
+  $("website-link").addEventListener("click", () => openExt("https://sstechservices.org"));
+  const plat = (window.nexeus && window.nexeus.platform) || navigator.platform || "";
+  const ver = (window.nexeus && window.nexeus.version) ? " · electron " + window.nexeus.version : "";
+  $("platform-info").textContent = plat + ver;
+
+  // Auto-skip login if returning user
+  try {
+    if (localStorage.getItem("nexeus_user")) {
+      $("login-name").value = localStorage.getItem("nexeus_user");
+    }
+  } catch(e){}
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "sstech-nexeus-quick-support",
+  "productName": "SSTECH Nexeus Quick Support",
+  "version": "1.2.0",
+  "description": "SSTECH Nexeus Quick Support — secure remote assistance client by SSTECH Services & Academy.",
+  "main": "main.cjs",
+  "author": "SSTECH Services & Academy",
+  "license": "Proprietary",
+  "private": true,
+  "scripts": {
+    "package:win": "electron-packager . \"SSTECH-Nexeus-Quick-Support\" --platform=win32 --arch=x64 --out=../electron-release --overwrite --icon=renderer/icon",
+    "package:mac": "electron-packager . \"SSTECH-Nexeus-Quick-Support\" --platform=darwin --arch=x64 --out=../electron-release --overwrite --icon=renderer/logo.png"
+  },
+  "dependencies": {
+    "@electron/packager": "^20.0.1",
+    "electron": "^30.5.1"
+  }
+}
