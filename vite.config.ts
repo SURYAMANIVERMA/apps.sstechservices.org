@@ -11,6 +11,7 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
+    base:'/ss-tech-connect/',
     define: {
       __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
       __BUILD_HASH__: JSON.stringify(Math.random().toString(36).slice(2, 9)),
