@@ -1,8 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
-import logoAsset from "@/assets/sstech-logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -62,16 +61,18 @@ function AuthPage() {
 
   async function handleGoogle() {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
-      toast.error("Google sign-in failed");
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/auth` },
+      });
+      if (error) throw error;
+      if (!data.url) throw new Error("Google sign-in URL could not be created");
+      window.location.assign(data.url);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Google sign-in failed");
       setLoading(false);
-      return;
     }
-    if (result.redirected) return;
-    navigate({ to: "/app" });
   }
 
   return (
@@ -83,7 +84,7 @@ function AuthPage() {
 
       <div className="w-full max-w-md">
         <Link to="/" className="flex items-center gap-3 justify-center mb-8">
-          <img src={logoAsset.url} alt="SSTECH" className="h-11 w-11 rounded-xl bg-white/5 p-1" />
+          <img src={logoAsset} alt="SSTECH" className="h-11 w-11 rounded-xl bg-white/5 p-1" />
           <div className="leading-tight">
             <div className="font-bold tracking-tight">SSTECH <span className="text-blue-400">NEXEUS</span></div>
             <div className="text-[10px] uppercase tracking-[0.25em] text-white/50">Remote Support</div>

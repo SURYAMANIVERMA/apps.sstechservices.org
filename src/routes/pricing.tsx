@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoAsset from "@/assets/sstech-logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -150,7 +150,7 @@ function Pricing() {
       <header className="border-b border-white/10 bg-black/40 backdrop-blur sticky top-0 z-50">
         <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logoAsset.url} alt="SSTECH" className="h-9 w-9 rounded-lg bg-white/5 p-1" />
+            <img src={logoAsset} alt="SSTECH" className="h-9 w-9 rounded-lg bg-white/5 p-1" />
             <div className="font-bold text-sm">SSTECH <span className="text-blue-400">NEXEUS</span></div>
           </Link>
           <div className="flex items-center gap-3">

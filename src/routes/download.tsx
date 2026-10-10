@@ -1,14 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import logoAsset from "@/assets/sstech-logo.png.asset.json";
-import winInstaller from "@/assets/sstech-nexeus-windows.zip.asset.json";
+import logoAsset from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Download, ArrowLeft, Monitor, Apple, Smartphone, CheckCircle2, Shield, Zap, Headphones } from "lucide-react";
 
-const logo = logoAsset.url;
+const logo = logoAsset;
 
-// SSTECH Nexeus Quick Support — own Electron-based client.
-// Windows x64 build is hosted via lovable-assets.
-const QUICK_SUPPORT_URL = winInstaller.url;
+// SSTECH Nexeus Quick Support — host the Windows installer in public/downloads.
+const QUICK_SUPPORT_URL = "/downloads/SSTECH-Nexeus-Quick-Support-windows-x64.zip";
 
 export const Route = createFileRoute("/download")({
   head: () => ({

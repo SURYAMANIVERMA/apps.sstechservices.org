@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import logoAsset from "@/assets/sstech-logo.png.asset.json";
-const logo = logoAsset.url;
+import logoAsset from "@/assets/logo.png";
+const logo = logoAsset;
 import hero from "@/assets/hero-nexeus.jpg";
 import { Button } from "@/components/ui/button";
 import {

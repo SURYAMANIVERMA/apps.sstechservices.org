@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Apple, ExternalLink, ShieldCheck } from "lucide-react";
-import logoAsset from "@/assets/sstech-logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/mobile/ios")({
@@ -20,7 +20,7 @@ function IosBuildPage() {
         <Link to="/download" className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Downloads
         </Link>
-        <img src={logoAsset.url} alt="SSTECH Nexeus" className="h-16 w-16 rounded-2xl bg-background p-1 ring-1 ring-border" />
+        <img src={logoAsset} alt="SSTECH Nexeus" className="h-16 w-16 rounded-2xl bg-background p-1 ring-1 ring-border" />
         <div className="mt-8 inline-flex w-fit items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-1.5 text-xs text-muted-foreground">
           <Apple className="h-3.5 w-3.5 text-primary" /> iOS build channel
         </div>

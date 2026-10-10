@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Copy, RefreshCw, LogOut, Plus, Trash2, Crown, Monitor, KeyRound, Ticket, Download, Loader2, ShieldCheck, XCircle, LayoutDashboard } from "lucide-react";
-import logoAsset from "@/assets/sstech-logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 import { startRemoteSession, pairPartnerDevice, pollSessionStatus } from "@/lib/remote.functions";
 
 type ConnectStage = "idle" | "pin" | "handshake" | "authorizing" | "connected" | "failed";
@@ -227,7 +227,7 @@ export default function Dashboard() {
       <header className="border-b border-white/10 bg-black/40 backdrop-blur">
         <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logoAsset.url} alt="SSTECH" className="h-9 w-9 rounded-lg bg-white/5 p-1" />
+            <img src={logoAsset} alt="SSTECH" className="h-9 w-9 rounded-lg bg-white/5 p-1" />
             <div className="leading-tight">
               <div className="font-bold text-sm">SSTECH <span className="text-blue-400">NEXEUS</span></div>
               <div className="text-[10px] uppercase tracking-[0.2em] text-white/40">Dashboard</div>

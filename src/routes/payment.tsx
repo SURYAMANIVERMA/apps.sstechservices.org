@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Copy, Building2, CheckCircle2, ArrowLeft, IndianRupee, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
-import logoAsset from "@/assets/sstech-logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 
 export const Route = createFileRoute("/payment")({
   head: () => ({
@@ -60,7 +60,7 @@ function PaymentPage() {
       <header className="border-b border-white/10 bg-black/40 backdrop-blur">
         <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logoAsset.url} alt="SSTECH" className="h-9 w-9 rounded-lg bg-white/5 p-1" />
+            <img src={logoAsset} alt="SSTECH" className="h-9 w-9 rounded-lg bg-white/5 p-1" />
             <div className="leading-tight">
               <div className="font-bold text-sm">SSTECH <span className="text-blue-400">NEXEUS</span></div>
               <div className="text-[10px] uppercase tracking-[0.2em] text-white/40">Payment Portal</div>

@@ -27,7 +27,7 @@ import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AuthenticatedTicketsRouteImport } from './routes/_authenticated/tickets'
 import { Route as AuthenticatedLicensesRouteImport } from './routes/_authenticated/licenses'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as EmailQueueProcessRouteImport } from './routes/api/email/queue/process'
 import { Route as ApiPublicRemoteStreamRouteImport } from './routes/api/public/remote/stream'
 import { Route as ApiPublicRemoteStartRouteImport } from './routes/api/public/remote/start'
 import { Route as ApiPublicRemoteRegisterRouteImport } from './routes/api/public/remote/register'
@@ -123,10 +123,10 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   path: '/app',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
+const EmailQueueProcessRoute =
+  EmailQueueProcessRouteImport.update({
+    id: '/api/email/queue/process',
+    path: '/api/email/queue/process',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicRemoteStreamRoute = ApiPublicRemoteStreamRouteImport.update({
@@ -178,7 +178,7 @@ export interface FileRoutesByFullPath {
   '/api/public/remote/register': typeof ApiPublicRemoteRegisterRoute
   '/api/public/remote/start': typeof ApiPublicRemoteStartRoute
   '/api/public/remote/stream': typeof ApiPublicRemoteStreamRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/api/email/queue/process': typeof EmailQueueProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -203,7 +203,7 @@ export interface FileRoutesByTo {
   '/api/public/remote/register': typeof ApiPublicRemoteRegisterRoute
   '/api/public/remote/start': typeof ApiPublicRemoteStartRoute
   '/api/public/remote/stream': typeof ApiPublicRemoteStreamRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/api/email/queue/process': typeof EmailQueueProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -230,7 +230,7 @@ export interface FileRoutesById {
   '/api/public/remote/register': typeof ApiPublicRemoteRegisterRoute
   '/api/public/remote/start': typeof ApiPublicRemoteStartRoute
   '/api/public/remote/stream': typeof ApiPublicRemoteStreamRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/api/email/queue/process': typeof EmailQueueProcessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -257,7 +257,7 @@ export interface FileRouteTypes {
     | '/api/public/remote/register'
     | '/api/public/remote/start'
     | '/api/public/remote/stream'
-    | '/lovable/email/queue/process'
+    | '/api/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -282,7 +282,7 @@ export interface FileRouteTypes {
     | '/api/public/remote/register'
     | '/api/public/remote/start'
     | '/api/public/remote/stream'
-    | '/lovable/email/queue/process'
+    | '/api/email/queue/process'
   id:
     | '__root__'
     | '/'
@@ -308,7 +308,7 @@ export interface FileRouteTypes {
     | '/api/public/remote/register'
     | '/api/public/remote/start'
     | '/api/public/remote/stream'
-    | '/lovable/email/queue/process'
+    | '/api/email/queue/process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -331,7 +331,7 @@ export interface RootRouteChildren {
   ApiPublicRemoteRegisterRoute: typeof ApiPublicRemoteRegisterRoute
   ApiPublicRemoteStartRoute: typeof ApiPublicRemoteStartRoute
   ApiPublicRemoteStreamRoute: typeof ApiPublicRemoteStreamRoute
-  LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
+  EmailQueueProcessRoute: typeof EmailQueueProcessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -462,11 +462,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+    '/api/email/queue/process': {
+      id: '/api/email/queue/process'
+      path: '/api/email/queue/process'
+      fullPath: '/api/email/queue/process'
+      preLoaderRoute: typeof EmailQueueProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/remote/stream': {
@@ -552,8 +552,18 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicRemoteRegisterRoute: ApiPublicRemoteRegisterRoute,
   ApiPublicRemoteStartRoute: ApiPublicRemoteStartRoute,
   ApiPublicRemoteStreamRoute: ApiPublicRemoteStreamRoute,
-  LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
+  EmailQueueProcessRoute: EmailQueueProcessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

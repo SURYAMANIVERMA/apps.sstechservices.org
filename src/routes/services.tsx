@@ -4,7 +4,7 @@ import {
   Shield, Flame, Camera, Server, Cloud, Boxes, Lock, Globe, Smartphone,
   Network, LifeBuoy, Database, ArrowRight,
 } from "lucide-react";
-import logoAsset from "@/assets/sstech-logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -39,7 +39,7 @@ function ServicesPage() {
       <header className="border-b border-white/10 bg-black/40 backdrop-blur sticky top-0 z-30">
         <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logoAsset.url} alt="SS TECH SERVICES" className="h-9 w-9 rounded-lg bg-white/5 p-1" />
+            <img src={logoAsset} alt="SS TECH SERVICES" className="h-9 w-9 rounded-lg bg-white/5 p-1" />
             <div className="leading-tight">
               <div className="font-bold text-sm">SS TECH <span className="text-blue-400">SERVICES</span></div>
               <div className="text-[10px] uppercase tracking-[0.2em] text-white/40">Enterprise Platform</div>

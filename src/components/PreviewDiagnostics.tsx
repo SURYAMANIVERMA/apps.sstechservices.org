@@ -33,9 +33,8 @@ export function PreviewDiagnostics() {
   const host = typeof window !== "undefined" ? window.location.hostname : "";
   const isPreview =
     import.meta.env.DEV ||
-    host.includes("lovable.app") ||
-    host.includes("lovable.dev") ||
-    host === "localhost";
+    host === "localhost" ||
+    host === "127.0.0.1";
   if (!isPreview) return null;
 
   const toggle = () => {
